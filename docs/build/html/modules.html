@@ -52,6 +52,14 @@
 <li class="toctree-l2"><a class="reference internal" href="#users_service.app.update_user"><code class="docutils literal notranslate"><span class="pre">update_user()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="#module-reviews_service.app">Reviews Service API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#reviews_service.app.delete_review"><code class="docutils literal notranslate"><span class="pre">delete_review()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reviews_service.app.get_room_reviews"><code class="docutils literal notranslate"><span class="pre">get_room_reviews()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reviews_service.app.moderate_review"><code class="docutils literal notranslate"><span class="pre">moderate_review()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reviews_service.app.submit_review"><code class="docutils literal notranslate"><span class="pre">submit_review()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reviews_service.app.update_review"><code class="docutils literal notranslate"><span class="pre">update_review()</span></code></a></li>
+</ul>
+</li>
 </ul>
 
         </div>
@@ -183,6 +191,116 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>username</strong> (<em>str</em>) – The username of the user to update</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>JSON success message.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-reviews_service.app">
+<span id="reviews-service-api"></span><h1>Reviews Service API<a class="headerlink" href="#module-reviews_service.app" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="reviews_service.app.delete_review">
+<span class="sig-prename descclassname"><span class="pre">reviews_service.app.</span></span><span class="sig-name descname"><span class="pre">delete_review</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">review_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/reviews_service/app.html#delete_review"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reviews_service.app.delete_review" title="Link to this definition"></a></dt>
+<dd><p>Delete a review.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>review_id</strong> (<em>int</em>) – The ID of the review to delete.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>JSON success message.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="reviews_service.app.get_room_reviews">
+<span class="sig-prename descclassname"><span class="pre">reviews_service.app.</span></span><span class="sig-name descname"><span class="pre">get_room_reviews</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">room_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/reviews_service/app.html#get_room_reviews"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reviews_service.app.get_room_reviews" title="Link to this definition"></a></dt>
+<dd><p>Retrieve all reviews for a specific meeting room.</p>
+<p><strong>Note</strong>: This endpoint filters out reviews where <code class="docutils literal notranslate"><span class="pre">is_flagged</span></code> is True,
+ensuring that only appropriate content is returned to users.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>room_id</strong> (<em>int</em>) – The ID of the meeting room.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>JSON list of reviews.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="reviews_service.app.moderate_review">
+<span class="sig-prename descclassname"><span class="pre">reviews_service.app.</span></span><span class="sig-name descname"><span class="pre">moderate_review</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">review_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/reviews_service/app.html#moderate_review"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reviews_service.app.moderate_review" title="Link to this definition"></a></dt>
+<dd><p>Flags a review as inappropriate (Moderation Feature).</p>
+<dl class="simple">
+<dt>Expected JSON Input:</dt><dd><ul class="simple">
+<li><p>action (str): Must be “flag” to hide the review.</p></li>
+<li><p>reason (str): Optional reason for flagging.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>review_id</strong> (<em>int</em>) – The ID of the review to moderate.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>JSON success message.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="reviews_service.app.submit_review">
+<span class="sig-prename descclassname"><span class="pre">reviews_service.app.</span></span><span class="sig-name descname"><span class="pre">submit_review</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/reviews_service/app.html#submit_review"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reviews_service.app.submit_review" title="Link to this definition"></a></dt>
+<dd><p>Submit a new review for a meeting room.</p>
+<dl class="simple">
+<dt>Expected JSON Input:</dt><dd><ul class="simple">
+<li><p>user_username (str): The username of the reviewer.</p></li>
+<li><p>room_id (int): The ID of the meeting room being reviewed.</p></li>
+<li><p>rating (int): The rating given to the room (1-5).</p></li>
+<li><p>comment (str): the review text (will be sanitized).</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON success message.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="reviews_service.app.update_review">
+<span class="sig-prename descclassname"><span class="pre">reviews_service.app.</span></span><span class="sig-name descname"><span class="pre">update_review</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">review_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/reviews_service/app.html#update_review"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reviews_service.app.update_review" title="Link to this definition"></a></dt>
+<dd><p>Update an existing review.</p>
+<dl class="simple">
+<dt>Expected JSON Input:</dt><dd><ul class="simple">
+<li><p>rating (int): The updated rating (1-5).</p></li>
+<li><p>comment (str): The updated comment.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>review_id</strong> (<em>int</em>) – The ID of the review to update.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>JSON success message.</p>

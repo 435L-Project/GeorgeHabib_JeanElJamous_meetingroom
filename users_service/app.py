@@ -1,8 +1,12 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from models import db, User
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
+
+try:
+    from models import db, User
+except ImportError:
+    from users_service.models import db, User
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:password123@localhost:5432/meeting_room_db'

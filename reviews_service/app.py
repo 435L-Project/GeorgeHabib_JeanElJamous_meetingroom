@@ -1,8 +1,12 @@
 from flask import Flask, request, jsonify
-from models import db, Review
 from flask_sqlalchemy import SQLAlchemy
 import bleach
 import os
+
+try:
+    from models import db, Review
+except ImportError:
+    from reviews_service.models import db, Review
 
 app = Flask(__name__)
 

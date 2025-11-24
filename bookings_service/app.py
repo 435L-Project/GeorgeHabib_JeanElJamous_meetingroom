@@ -54,13 +54,35 @@ def get_bookings():
     bookings = Booking.query.all()
     return jsonify([b.to_dict() for b in bookings]), 200
 
-@app.route('/bookings/cancel/<int:id>', methods=['POST'])
+@app.route('/bookings/cancel/<int:id>', methods=['DELETE']) # Changed from POST to DELETE
 def cancel_booking(id):
     """Cancels a booking by ID."""
     booking = Booking.query.get_or_404(id)
     db.session.delete(booking)
     db.session.commit()
     return jsonify({"message": "Booking cancelled"}), 200
+
+
+@app.route('/bookings/check', methods=['POST'])
+def check_availability():
+    """
+    Checks if a room is available for a specific time slot.
+    """
+    data = request.get_json()
+    room_id = data['room_id']
+    start = datetime.fromisoformat(data['start_time'])
+    end = datetime.fromisoformat(data['end_time'])
+    
+    conflict = Booking.query.filter(
+        Booking.room_id == room_id,
+        Booking.end_time > start,
+        Booking.start_time < end
+    ).first()
+    
+    if conflict:
+        return jsonify({"available": False, "message": "Room is occupied"}), 200
+    else:
+        return jsonify({"available": True, "message": "Room is available"}), 200
 
 if __name__ == '__main__':
     app.run(debug=True, port=5003)

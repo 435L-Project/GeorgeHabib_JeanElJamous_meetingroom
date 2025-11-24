@@ -37,16 +37,28 @@ def create_room():
 @app.route('/rooms', methods=['GET'])
 def get_rooms():
     """
-    Retrieves all rooms, with optional filtering.
-    :param capacity: (Query Param) Filter by minimum capacity
-    :return: JSON list of rooms
+    Retrieves available rooms based on capacity, location, and equipment.
     """
-    capacity_filter = request.args.get('capacity')
-    if capacity_filter:
-        rooms = Room.query.filter(Room.capacity >= int(capacity_filter)).all()
-    else:
-        rooms = Room.query.all()
+    query = Room.query
+    
+    # Filter by Capacity
+    capacity = request.args.get('capacity')
+    if capacity:
+        query = query.filter(Room.capacity >= int(capacity))
+        
+    # Filter by Location
+    location = request.args.get('location')
+    if location:
+        query = query.filter(Room.location.ilike(f"%{location}%"))
+
+    # Filter by Equipment
+    equipment = request.args.get('equipment')
+    if equipment:
+        query = query.filter(Room.equipment.ilike(f"%{equipment}%"))
+        
+    rooms = query.all()
     return jsonify([room.to_dict() for room in rooms]), 200
+
 
 @app.route('/rooms/<int:id>', methods=['PUT'])
 def update_room(id):

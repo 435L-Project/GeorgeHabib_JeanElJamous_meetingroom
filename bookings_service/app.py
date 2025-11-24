@@ -1,16 +1,17 @@
 from flask import Flask, request, jsonify
-from models import db, Booking
 from datetime import datetime
+import os
 
 app = Flask(__name__)
 
-# --- DATABASE CONFIGURATION ---
-# Currently set to SQLite for local testing.
-
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bookings.db'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:password@localhost:5432/meeting_room_db'
-
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:password123@localhost:5432/meeting_room_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+try:
+    from models import db, Booking
+except ImportError:
+    from bookings_service.models import db, Booking
+
 
 db.init_app(app)
 
@@ -22,13 +23,21 @@ def create_booking():
     """
     Creates a booking if the room is available.
     checks for time conflicts before saving.
+
+    Expected JSON input:
+        - user_id (int)
+        - room_id (int)
+        - start_time (str): ISO format datetime string
+        - end_time (str): ISO format datetime string
+
+    :return: JSON success message or 409 conflict error.
+    :rtype: tuple
     """
     data = request.get_json()
     room_id = data['room_id']
     start = datetime.fromisoformat(data['start_time'])
     end = datetime.fromisoformat(data['end_time'])
     
-    # CONFLICT LOGIC: Check if any booking overlaps with requested time
     conflict = Booking.query.filter(
         Booking.room_id == room_id,
         Booking.end_time > start,
@@ -50,13 +59,23 @@ def create_booking():
 
 @app.route('/bookings', methods=['GET'])
 def get_bookings():
-    """Retrieves all bookings."""
+    """Retrieves all bookings.
+    
+    :return: List of all bookings.
+    :rtype: tuple    
+    """
     bookings = Booking.query.all()
     return jsonify([b.to_dict() for b in bookings]), 200
 
-@app.route('/bookings/cancel/<int:id>', methods=['DELETE']) # Changed from POST to DELETE
+@app.route('/bookings/cancel/<int:id>', methods=['DELETE'])
 def cancel_booking(id):
-    """Cancels a booking by ID."""
+    """Cancels (deletes) a booking by ID.
+    
+    :param id: ID of the booking to cancel.
+    :type id: int
+    :return: JSON success message.
+    :rtype: tuple
+    """
     booking = Booking.query.get_or_404(id)
     db.session.delete(booking)
     db.session.commit()
@@ -67,6 +86,14 @@ def cancel_booking(id):
 def check_availability():
     """
     Checks if a room is available for a specific time slot.
+
+    Expected JSON input:
+        - room_id (int)
+        - start_time (str)
+        - end_time (str)
+
+    :return: JSON availability status.
+    :rtype: tuple
     """
     data = request.get_json()
     room_id = data['room_id']

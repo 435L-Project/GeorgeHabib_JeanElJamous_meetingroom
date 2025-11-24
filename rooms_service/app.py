@@ -1,16 +1,18 @@
 from flask import Flask, request, jsonify
-from models import db, Room
 import os
 
 app = Flask(__name__)
 
-# --- DATABASE CONFIGURATION ---
-# Currently set to SQLite for local testing.
 
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///rooms.db'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:password@localhost:5432/meeting_room_db'
-
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:password123@localhost:5432/meeting_room_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Smart Import for Sphinx compatibility
+try:
+    from models import db, Room
+except ImportError:
+    from rooms_service.models import db, Room
+
 
 db.init_app(app)
 
@@ -21,7 +23,15 @@ with app.app_context():
 def create_room():
     """
     Creates a new meeting room.
+
+    Expected JSON input:
+        - name (str): Name of the room
+        - capacity (int): Maximum number of people in the room
+        - equipment (str): Equipment available in the room
+        - location (str): Location of the room
+
     :return: JSON message and status code 201
+    :rtype: tuple
     """
     data = request.get_json()
     new_room = Room(
@@ -38,6 +48,14 @@ def create_room():
 def get_rooms():
     """
     Retrieves available rooms based on capacity, location, and equipment.
+
+    Parameters:
+        - capacity (int): Minimum capacity required.
+        - location (str): Substring match for location.
+        - equipment (str): Substring match for equipment.
+
+    :return: List of room objects matching the criteria.
+    :rtype: tuple
     """
     query = Room.query
     
@@ -64,8 +82,11 @@ def get_rooms():
 def update_room(id):
     """
     Updates room details (capacity, equipment).
+
     :param id: The ID of the room to update
+    :type id: int
     :return: JSON message
+    :rtype: tuple
     """
     room = Room.query.get_or_404(id)
     data = request.get_json()
@@ -80,8 +101,11 @@ def update_room(id):
 def delete_room(id):
     """
     Deletes a room by ID.
+
     :param id: The ID of the room to delete
+    :type id: int
     :return: JSON message
+    :rtype: tuple
     """
     room = Room.query.get_or_404(id)
     db.session.delete(room)

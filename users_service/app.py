@@ -153,10 +153,18 @@ def get_user_bookings(username):
     """
 
     user = User.query.filter_by(username=username).first()
+    if not user:
+        return jsonify({'message': 'User not found'}), 404
+    
+    response = request.get('http://localhost:5003/bookings')
 
-    # TODO: IMPLEMENT  inter-service communicaiton to Bookings service
+    if response.status_code == 200:
+        all_bookings = response.json()
+        user_bookings = [b for b in all_bookings if b['user_id'] == user.id]
+        return jsonify(user_bookings), 200
 
-    return jsonify({'message': 'Booking history retrieval to be implemented with Service 3'}), 200
+    else:
+        return jsonify({'message': 'Failed to retrieve bookings from Booking Service'}), 500
 
 
 

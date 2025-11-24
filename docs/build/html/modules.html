@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Users Service API &mdash; Smart Meeting Room 1.0 documentation</title>
+  <title>Project API Documentation &mdash; Smart Meeting Room 1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
@@ -43,21 +43,81 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Users Service API</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#users_service.app.delete_user"><code class="docutils literal notranslate"><span class="pre">delete_user()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#users_service.app.get_user"><code class="docutils literal notranslate"><span class="pre">get_user()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#users_service.app.get_user_bookings"><code class="docutils literal notranslate"><span class="pre">get_user_bookings()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#users_service.app.login"><code class="docutils literal notranslate"><span class="pre">login()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#users_service.app.register"><code class="docutils literal notranslate"><span class="pre">register()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#users_service.app.update_user"><code class="docutils literal notranslate"><span class="pre">update_user()</span></code></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Project API Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#users-service">Users Service</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#users_service.app.delete_user"><code class="docutils literal notranslate"><span class="pre">delete_user()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#users_service.app.get_user"><code class="docutils literal notranslate"><span class="pre">get_user()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#users_service.app.get_user_bookings"><code class="docutils literal notranslate"><span class="pre">get_user_bookings()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#users_service.app.login"><code class="docutils literal notranslate"><span class="pre">login()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#users_service.app.register"><code class="docutils literal notranslate"><span class="pre">register()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#users_service.app.update_user"><code class="docutils literal notranslate"><span class="pre">update_user()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#users_service.models.User"><code class="docutils literal notranslate"><span class="pre">User</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#users_service.models.User.email"><code class="docutils literal notranslate"><span class="pre">User.email</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#users_service.models.User.full_name"><code class="docutils literal notranslate"><span class="pre">User.full_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#users_service.models.User.id"><code class="docutils literal notranslate"><span class="pre">User.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#users_service.models.User.password"><code class="docutils literal notranslate"><span class="pre">User.password</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#users_service.models.User.query"><code class="docutils literal notranslate"><span class="pre">User.query</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#users_service.models.User.role"><code class="docutils literal notranslate"><span class="pre">User.role</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#users_service.models.User.to_dict"><code class="docutils literal notranslate"><span class="pre">User.to_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#users_service.models.User.username"><code class="docutils literal notranslate"><span class="pre">User.username</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="#module-reviews_service.app">Reviews Service API</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#reviews_service.app.delete_review"><code class="docutils literal notranslate"><span class="pre">delete_review()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#reviews_service.app.get_room_reviews"><code class="docutils literal notranslate"><span class="pre">get_room_reviews()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#reviews_service.app.moderate_review"><code class="docutils literal notranslate"><span class="pre">moderate_review()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#reviews_service.app.submit_review"><code class="docutils literal notranslate"><span class="pre">submit_review()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#reviews_service.app.update_review"><code class="docutils literal notranslate"><span class="pre">update_review()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#reviews-service">Reviews Service</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#reviews_service.app.delete_review"><code class="docutils literal notranslate"><span class="pre">delete_review()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reviews_service.app.get_room_reviews"><code class="docutils literal notranslate"><span class="pre">get_room_reviews()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reviews_service.app.moderate_review"><code class="docutils literal notranslate"><span class="pre">moderate_review()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reviews_service.app.submit_review"><code class="docutils literal notranslate"><span class="pre">submit_review()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reviews_service.app.update_review"><code class="docutils literal notranslate"><span class="pre">update_review()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reviews_service.models.Review"><code class="docutils literal notranslate"><span class="pre">Review</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#reviews_service.models.Review.comment"><code class="docutils literal notranslate"><span class="pre">Review.comment</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reviews_service.models.Review.id"><code class="docutils literal notranslate"><span class="pre">Review.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reviews_service.models.Review.is_flagged"><code class="docutils literal notranslate"><span class="pre">Review.is_flagged</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reviews_service.models.Review.query"><code class="docutils literal notranslate"><span class="pre">Review.query</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reviews_service.models.Review.rating"><code class="docutils literal notranslate"><span class="pre">Review.rating</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reviews_service.models.Review.room_id"><code class="docutils literal notranslate"><span class="pre">Review.room_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reviews_service.models.Review.timestamp"><code class="docutils literal notranslate"><span class="pre">Review.timestamp</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reviews_service.models.Review.to_dict"><code class="docutils literal notranslate"><span class="pre">Review.to_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reviews_service.models.Review.user_username"><code class="docutils literal notranslate"><span class="pre">Review.user_username</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#rooms-service">Rooms Service</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rooms_service.app.create_room"><code class="docutils literal notranslate"><span class="pre">create_room()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rooms_service.app.delete_room"><code class="docutils literal notranslate"><span class="pre">delete_room()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rooms_service.app.get_rooms"><code class="docutils literal notranslate"><span class="pre">get_rooms()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rooms_service.app.update_room"><code class="docutils literal notranslate"><span class="pre">update_room()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rooms_service.models.Room"><code class="docutils literal notranslate"><span class="pre">Room</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rooms_service.models.Room.capacity"><code class="docutils literal notranslate"><span class="pre">Room.capacity</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rooms_service.models.Room.equipment"><code class="docutils literal notranslate"><span class="pre">Room.equipment</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rooms_service.models.Room.id"><code class="docutils literal notranslate"><span class="pre">Room.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rooms_service.models.Room.location"><code class="docutils literal notranslate"><span class="pre">Room.location</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rooms_service.models.Room.name"><code class="docutils literal notranslate"><span class="pre">Room.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rooms_service.models.Room.query"><code class="docutils literal notranslate"><span class="pre">Room.query</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rooms_service.models.Room.to_dict"><code class="docutils literal notranslate"><span class="pre">Room.to_dict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#bookings-service">Bookings Service</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bookings_service.app.cancel_booking"><code class="docutils literal notranslate"><span class="pre">cancel_booking()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bookings_service.app.check_availability"><code class="docutils literal notranslate"><span class="pre">check_availability()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bookings_service.app.create_booking"><code class="docutils literal notranslate"><span class="pre">create_booking()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bookings_service.app.get_bookings"><code class="docutils literal notranslate"><span class="pre">get_bookings()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bookings_service.models.Booking"><code class="docutils literal notranslate"><span class="pre">Booking</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bookings_service.models.Booking.end_time"><code class="docutils literal notranslate"><span class="pre">Booking.end_time</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bookings_service.models.Booking.id"><code class="docutils literal notranslate"><span class="pre">Booking.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bookings_service.models.Booking.query"><code class="docutils literal notranslate"><span class="pre">Booking.query</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bookings_service.models.Booking.room_id"><code class="docutils literal notranslate"><span class="pre">Booking.room_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bookings_service.models.Booking.start_time"><code class="docutils literal notranslate"><span class="pre">Booking.start_time</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bookings_service.models.Booking.to_dict"><code class="docutils literal notranslate"><span class="pre">Booking.to_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bookings_service.models.Booking.user_id"><code class="docutils literal notranslate"><span class="pre">Booking.user_id</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -76,7 +136,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Users Service API</li>
+      <li class="breadcrumb-item active">Project API Documentation</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/modules.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -86,9 +146,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-users_service.app">
-<span id="users-service-api"></span><h1>Users Service API<a class="headerlink" href="#module-users_service.app" title="Link to this heading"></a></h1>
-<dl class="py function">
+  <section id="project-api-documentation">
+<h1>Project API Documentation<a class="headerlink" href="#project-api-documentation" title="Link to this heading"></a></h1>
+<p>This documentation covers the four microservices that make up the Smart Meeting Room system.</p>
+<section id="users-service">
+<h2>Users Service<a class="headerlink" href="#users-service" title="Link to this heading"></a></h2>
+<p><strong>API Endpoints</strong></p>
+<dl class="py function" id="module-users_service.app">
 <dt class="sig sig-object py" id="users_service.app.delete_user">
 <span class="sig-prename descclassname"><span class="pre">users_service.app.</span></span><span class="sig-name descname"><span class="pre">delete_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users_service/app.html#delete_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users_service.app.delete_user" title="Link to this definition"></a></dt>
 <dd><p>Permanently delete a user account from the database.</p>
@@ -201,10 +265,87 @@
 </dl>
 </dd></dl>
 
+<p><strong>Data Models</strong></p>
+<dl class="py class" id="module-users_service.models">
+<dt class="sig sig-object py" id="users_service.models.User">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users_service.models.</span></span><span class="sig-name descname"><span class="pre">User</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users_service/models.html#User"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users_service.models.User" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Represents a user in the system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>int</em>) – Unique identifier for the user.</p></li>
+<li><p><strong>full_name</strong> (<em>str</em>) – Full name of the user.</p></li>
+<li><p><strong>username</strong> (<em>str</em>) – Unique username for the user.</p></li>
+<li><p><strong>email</strong> (<em>str</em>) – Unique email address of the user.</p></li>
+<li><p><strong>password</strong> (<em>str</em>) – Hashed password for the user.</p></li>
+<li><p><strong>role</strong> (<em>str</em>) – Role of the user (e.g., admin, user).</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users_service.models.User.email">
+<span class="sig-name descname"><span class="pre">email</span></span><a class="headerlink" href="#users_service.models.User.email" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users_service.models.User.full_name">
+<span class="sig-name descname"><span class="pre">full_name</span></span><a class="headerlink" href="#users_service.models.User.full_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users_service.models.User.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#users_service.models.User.id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users_service.models.User.password">
+<span class="sig-name descname"><span class="pre">password</span></span><a class="headerlink" href="#users_service.models.User.password" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users_service.models.User.query">
+<span class="sig-name descname"><span class="pre">query</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">t.ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Query</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#users_service.models.User.query" title="Link to this definition"></a></dt>
+<dd><p>A SQLAlchemy query for a model. Equivalent to <code class="docutils literal notranslate"><span class="pre">db.session.query(Model)</span></code>. Can be
+customized per-model by overriding <code class="xref py py-attr docutils literal notranslate"><span class="pre">query_class</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The query interface is considered legacy in SQLAlchemy. Prefer using
+<code class="docutils literal notranslate"><span class="pre">session.execute(select())</span></code> instead.</p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users_service.models.User.role">
+<span class="sig-name descname"><span class="pre">role</span></span><a class="headerlink" href="#users_service.models.User.role" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="users_service.models.User.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/users_service/models.html#User.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users_service.models.User.to_dict" title="Link to this definition"></a></dt>
+<dd><p>Converts the User object to a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary representation of the User object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users_service.models.User.username">
+<span class="sig-name descname"><span class="pre">username</span></span><a class="headerlink" href="#users_service.models.User.username" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="module-reviews_service.app">
-<span id="reviews-service-api"></span><h1>Reviews Service API<a class="headerlink" href="#module-reviews_service.app" title="Link to this heading"></a></h1>
-<dl class="py function">
+<section id="reviews-service">
+<h2>Reviews Service<a class="headerlink" href="#reviews-service" title="Link to this heading"></a></h2>
+<p><strong>API Endpoints</strong></p>
+<dl class="py function" id="module-reviews_service.app">
 <dt class="sig sig-object py" id="reviews_service.app.delete_review">
 <span class="sig-prename descclassname"><span class="pre">reviews_service.app.</span></span><span class="sig-name descname"><span class="pre">delete_review</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">review_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/reviews_service/app.html#delete_review"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reviews_service.app.delete_review" title="Link to this definition"></a></dt>
 <dd><p>Delete a review.</p>
@@ -311,6 +452,392 @@ ensuring that only appropriate content is returned to users.</p>
 </dl>
 </dd></dl>
 
+<p><strong>Data Models</strong></p>
+<dl class="py class" id="module-reviews_service.models">
+<dt class="sig sig-object py" id="reviews_service.models.Review">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">reviews_service.models.</span></span><span class="sig-name descname"><span class="pre">Review</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/reviews_service/models.html#Review"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reviews_service.models.Review" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Represents a user review for a specific room</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>int</em>) – Unique identifier for the review.</p></li>
+<li><p><strong>user_username</strong> (<em>str</em>) – Username of the user who wrote the review.</p></li>
+<li><p><strong>room_id</strong> (<em>int</em>) – ID of the room being reviewed.</p></li>
+<li><p><strong>rating</strong> (<em>int</em>) – Rating given by the user (1-5).</p></li>
+<li><p><strong>comment</strong> (<em>str</em>) – Comment provided by the user.</p></li>
+<li><p><strong>timestamp</strong> (<em>datetime</em>) – Date and time when the review was created.</p></li>
+<li><p><strong>is_flagged</strong> (<em>bool</em>) – Moderation status.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="reviews_service.models.Review.comment">
+<span class="sig-name descname"><span class="pre">comment</span></span><a class="headerlink" href="#reviews_service.models.Review.comment" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="reviews_service.models.Review.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#reviews_service.models.Review.id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="reviews_service.models.Review.is_flagged">
+<span class="sig-name descname"><span class="pre">is_flagged</span></span><a class="headerlink" href="#reviews_service.models.Review.is_flagged" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="reviews_service.models.Review.query">
+<span class="sig-name descname"><span class="pre">query</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">t.ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Query</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#reviews_service.models.Review.query" title="Link to this definition"></a></dt>
+<dd><p>A SQLAlchemy query for a model. Equivalent to <code class="docutils literal notranslate"><span class="pre">db.session.query(Model)</span></code>. Can be
+customized per-model by overriding <code class="xref py py-attr docutils literal notranslate"><span class="pre">query_class</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The query interface is considered legacy in SQLAlchemy. Prefer using
+<code class="docutils literal notranslate"><span class="pre">session.execute(select())</span></code> instead.</p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="reviews_service.models.Review.rating">
+<span class="sig-name descname"><span class="pre">rating</span></span><a class="headerlink" href="#reviews_service.models.Review.rating" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="reviews_service.models.Review.room_id">
+<span class="sig-name descname"><span class="pre">room_id</span></span><a class="headerlink" href="#reviews_service.models.Review.room_id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="reviews_service.models.Review.timestamp">
+<span class="sig-name descname"><span class="pre">timestamp</span></span><a class="headerlink" href="#reviews_service.models.Review.timestamp" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="reviews_service.models.Review.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/reviews_service/models.html#Review.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reviews_service.models.Review.to_dict" title="Link to this definition"></a></dt>
+<dd><p>Converts the Review object to a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary representation of the Review object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="reviews_service.models.Review.user_username">
+<span class="sig-name descname"><span class="pre">user_username</span></span><a class="headerlink" href="#reviews_service.models.Review.user_username" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="rooms-service">
+<h2>Rooms Service<a class="headerlink" href="#rooms-service" title="Link to this heading"></a></h2>
+<p><strong>API Endpoints</strong></p>
+<dl class="py function" id="module-rooms_service.app">
+<dt class="sig sig-object py" id="rooms_service.app.create_room">
+<span class="sig-prename descclassname"><span class="pre">rooms_service.app.</span></span><span class="sig-name descname"><span class="pre">create_room</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rooms_service/app.html#create_room"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rooms_service.app.create_room" title="Link to this definition"></a></dt>
+<dd><p>Creates a new meeting room.</p>
+<dl class="simple">
+<dt>Expected JSON input:</dt><dd><ul class="simple">
+<li><p>name (str): Name of the room</p></li>
+<li><p>capacity (int): Maximum number of people in the room</p></li>
+<li><p>equipment (str): Equipment available in the room</p></li>
+<li><p>location (str): Location of the room</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON message and status code 201</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rooms_service.app.delete_room">
+<span class="sig-prename descclassname"><span class="pre">rooms_service.app.</span></span><span class="sig-name descname"><span class="pre">delete_room</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rooms_service/app.html#delete_room"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rooms_service.app.delete_room" title="Link to this definition"></a></dt>
+<dd><p>Deletes a room by ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>int</em>) – The ID of the room to delete</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>JSON message</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rooms_service.app.get_rooms">
+<span class="sig-prename descclassname"><span class="pre">rooms_service.app.</span></span><span class="sig-name descname"><span class="pre">get_rooms</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rooms_service/app.html#get_rooms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rooms_service.app.get_rooms" title="Link to this definition"></a></dt>
+<dd><p>Retrieves available rooms based on capacity, location, and equipment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>capacity</strong> (<em>-</em>) – Minimum capacity required.</p></li>
+<li><p><strong>location</strong> (<em>-</em>) – Substring match for location.</p></li>
+<li><p><strong>equipment</strong> (<em>-</em>) – Substring match for equipment.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of room objects matching the criteria.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rooms_service.app.update_room">
+<span class="sig-prename descclassname"><span class="pre">rooms_service.app.</span></span><span class="sig-name descname"><span class="pre">update_room</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rooms_service/app.html#update_room"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rooms_service.app.update_room" title="Link to this definition"></a></dt>
+<dd><p>Updates room details (capacity, equipment).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>int</em>) – The ID of the room to update</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>JSON message</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p><strong>Data Models</strong></p>
+<dl class="py class" id="module-rooms_service.models">
+<dt class="sig sig-object py" id="rooms_service.models.Room">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rooms_service.models.</span></span><span class="sig-name descname"><span class="pre">Room</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rooms_service/models.html#Room"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rooms_service.models.Room" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Represents a meeting room in the system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>int</em>) – Unique identifier for the room.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – Name of the room.</p></li>
+<li><p><strong>capacity</strong> (<em>int</em>) – Maximum number of people in the room.</p></li>
+<li><p><strong>equipment</strong> (<em>str</em>) – Equipment available in the room.</p></li>
+<li><p><strong>location</strong> (<em>str</em>) – Location of the room.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rooms_service.models.Room.capacity">
+<span class="sig-name descname"><span class="pre">capacity</span></span><a class="headerlink" href="#rooms_service.models.Room.capacity" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rooms_service.models.Room.equipment">
+<span class="sig-name descname"><span class="pre">equipment</span></span><a class="headerlink" href="#rooms_service.models.Room.equipment" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rooms_service.models.Room.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#rooms_service.models.Room.id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rooms_service.models.Room.location">
+<span class="sig-name descname"><span class="pre">location</span></span><a class="headerlink" href="#rooms_service.models.Room.location" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rooms_service.models.Room.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#rooms_service.models.Room.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rooms_service.models.Room.query">
+<span class="sig-name descname"><span class="pre">query</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">t.ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Query</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#rooms_service.models.Room.query" title="Link to this definition"></a></dt>
+<dd><p>A SQLAlchemy query for a model. Equivalent to <code class="docutils literal notranslate"><span class="pre">db.session.query(Model)</span></code>. Can be
+customized per-model by overriding <code class="xref py py-attr docutils literal notranslate"><span class="pre">query_class</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The query interface is considered legacy in SQLAlchemy. Prefer using
+<code class="docutils literal notranslate"><span class="pre">session.execute(select())</span></code> instead.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rooms_service.models.Room.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rooms_service/models.html#Room.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rooms_service.models.Room.to_dict" title="Link to this definition"></a></dt>
+<dd><p>Converts the Room object to a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary representation of the Room object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="bookings-service">
+<h2>Bookings Service<a class="headerlink" href="#bookings-service" title="Link to this heading"></a></h2>
+<p><strong>API Endpoints</strong></p>
+<dl class="py function" id="module-bookings_service.app">
+<dt class="sig sig-object py" id="bookings_service.app.cancel_booking">
+<span class="sig-prename descclassname"><span class="pre">bookings_service.app.</span></span><span class="sig-name descname"><span class="pre">cancel_booking</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bookings_service/app.html#cancel_booking"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookings_service.app.cancel_booking" title="Link to this definition"></a></dt>
+<dd><p>Cancels (deletes) a booking by ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>int</em>) – ID of the booking to cancel.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>JSON success message.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookings_service.app.check_availability">
+<span class="sig-prename descclassname"><span class="pre">bookings_service.app.</span></span><span class="sig-name descname"><span class="pre">check_availability</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/bookings_service/app.html#check_availability"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookings_service.app.check_availability" title="Link to this definition"></a></dt>
+<dd><p>Checks if a room is available for a specific time slot.</p>
+<dl class="simple">
+<dt>Expected JSON input:</dt><dd><ul class="simple">
+<li><p>room_id (int)</p></li>
+<li><p>start_time (str)</p></li>
+<li><p>end_time (str)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON availability status.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookings_service.app.create_booking">
+<span class="sig-prename descclassname"><span class="pre">bookings_service.app.</span></span><span class="sig-name descname"><span class="pre">create_booking</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/bookings_service/app.html#create_booking"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookings_service.app.create_booking" title="Link to this definition"></a></dt>
+<dd><p>Creates a booking if the room is available.
+checks for time conflicts before saving.</p>
+<dl class="simple">
+<dt>Expected JSON input:</dt><dd><ul class="simple">
+<li><p>user_id (int)</p></li>
+<li><p>room_id (int)</p></li>
+<li><p>start_time (str): ISO format datetime string</p></li>
+<li><p>end_time (str): ISO format datetime string</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON success message or 409 conflict error.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bookings_service.app.get_bookings">
+<span class="sig-prename descclassname"><span class="pre">bookings_service.app.</span></span><span class="sig-name descname"><span class="pre">get_bookings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/bookings_service/app.html#get_bookings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookings_service.app.get_bookings" title="Link to this definition"></a></dt>
+<dd><p>Retrieves all bookings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of all bookings.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p><strong>Data Models</strong></p>
+<dl class="py class" id="module-bookings_service.models">
+<dt class="sig sig-object py" id="bookings_service.models.Booking">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bookings_service.models.</span></span><span class="sig-name descname"><span class="pre">Booking</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bookings_service/models.html#Booking"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookings_service.models.Booking" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Represents a booking reservation for a room.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>int</em>) – Unique identifier for the booking.</p></li>
+<li><p><strong>user_id</strong> (<em>int</em>) – ID of the user who made the booking.</p></li>
+<li><p><strong>room_id</strong> (<em>int</em>) – ID of the room being booked.</p></li>
+<li><p><strong>start_time</strong> (<em>datetime</em>) – Start date and time of the booking.</p></li>
+<li><p><strong>end_time</strong> (<em>datetime</em>) – End date and time of the booking.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="bookings_service.models.Booking.end_time">
+<span class="sig-name descname"><span class="pre">end_time</span></span><a class="headerlink" href="#bookings_service.models.Booking.end_time" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="bookings_service.models.Booking.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#bookings_service.models.Booking.id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="bookings_service.models.Booking.query">
+<span class="sig-name descname"><span class="pre">query</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">t.ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Query</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#bookings_service.models.Booking.query" title="Link to this definition"></a></dt>
+<dd><p>A SQLAlchemy query for a model. Equivalent to <code class="docutils literal notranslate"><span class="pre">db.session.query(Model)</span></code>. Can be
+customized per-model by overriding <code class="xref py py-attr docutils literal notranslate"><span class="pre">query_class</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The query interface is considered legacy in SQLAlchemy. Prefer using
+<code class="docutils literal notranslate"><span class="pre">session.execute(select())</span></code> instead.</p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="bookings_service.models.Booking.room_id">
+<span class="sig-name descname"><span class="pre">room_id</span></span><a class="headerlink" href="#bookings_service.models.Booking.room_id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="bookings_service.models.Booking.start_time">
+<span class="sig-name descname"><span class="pre">start_time</span></span><a class="headerlink" href="#bookings_service.models.Booking.start_time" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bookings_service.models.Booking.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/bookings_service/models.html#Booking.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bookings_service.models.Booking.to_dict" title="Link to this definition"></a></dt>
+<dd><p>Converts the Booking object to a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary representation of the Booking object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="bookings_service.models.Booking.user_id">
+<span class="sig-name descname"><span class="pre">user_id</span></span><a class="headerlink" href="#bookings_service.models.Booking.user_id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
 </section>
 
 

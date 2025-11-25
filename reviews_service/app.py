@@ -5,8 +5,11 @@ import os
 
 try:
     from models import db, Review
+    from logger import audit_logger
 except ImportError:
     from reviews_service.models import db, Review
+    from reviews_service.logger import audit_logger
+
 
 app = Flask(__name__)
 
@@ -52,6 +55,9 @@ def submit_review():
 
     db.session.add(new_review)
     db.session.commit()
+
+    # log the audit event
+    audit_logger.info(f"Review Submitted: User {data['user_username']} rated Room {data['room_id']} with {data['rating']} stars.")
 
     return jsonify({'message': 'Review submitted successfully'}), 201
 
@@ -106,6 +112,9 @@ def update_review(review_id):
 
     db.session.commit()
 
+    # log the audit event
+    audit_logger.info(f"Review updated: review ID {review_id} was updated.")
+
     return jsonify({'message': 'Review updated successfully'}), 200
 
 
@@ -127,6 +136,9 @@ def delete_review(review_id):
 
     db.session.delete(review)
     db.session.commit()
+
+    # log the audit event
+    audit_logger.warning(f"Review deleted: review ID {review_id} was removed from the system.")
 
     return jsonify({'message': 'Review deleted successfully'}), 200
 
@@ -153,9 +165,34 @@ def moderate_review(review_id):
     if data.get('action') == 'flag':
         review.is_flagged = True
         db.session.commit()
+
+        # log the audit event
+        audit_logger.warning(f"Review moderated: review ID {review_id} was flagged for the reason: {data.get('reason', 'No reason provided')}")
+    
         return jsonify({'message': 'Review has been flagged and hidden'}), 200
     
     return jsonify({'message': 'Invalid moderation action'}), 400
+
+
+# this is for phase 2 logging
+@app.route('/reviews/logs', methods=['GET'])
+def get_audit_logs():
+    """
+    Retrieve audit logs related to review activities.
+
+    :return: JSON list of audit log entries.
+    :rtype: tuple
+    """
+    try:
+        with open('audit.log', 'r') as log_file:
+            logs = log_file.readlines()
+        
+        return jsonify({'logs': logs}), 200
+    except FileNotFoundError:
+        return jsonify({'message': 'No audit logs found'}), 404
+
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, port=5004)

@@ -11,8 +11,10 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 try:
     from models import db, Room
+    from logger import audit_logger
 except ImportError:
-    from rooms_service.models import db, Room
+    from users_service.models import db, Room
+    from users_service.logger import audit_logger
 
 
 db.init_app(app)
@@ -43,6 +45,10 @@ def create_room():
     )
     db.session.add(new_room)
     db.session.commit()
+
+    # audit log
+    audit_logger.info(f"Room created: '{new_room.name}' (ID: {new_room.id}, capacity: {new_room.capacity}) at {new_room.location}.")
+
     return jsonify({"message": "Room created successfully", "room": new_room.to_dict()}), 201
 
 @app.route('/rooms', methods=['GET'])
@@ -96,6 +102,10 @@ def update_room(id):
     if 'equipment' in data:
         room.equipment = data['equipment']
     db.session.commit()
+
+    # audit log
+    audit_logger.info(f"Room Updated: Room ID {id} details were modified.")
+
     return jsonify({"message": "Room updated successfully", "room": room.to_dict()}), 200
 
 @app.route('/rooms/<int:id>', methods=['DELETE'])
@@ -111,6 +121,10 @@ def delete_room(id):
     room = Room.query.get_or_404(id)
     db.session.delete(room)
     db.session.commit()
+
+    # audit log
+    audit_logger.warning(f"Room Deleted: Room ID {id} was removed from inventory.")
+
     return jsonify({"message": "Room deleted successfully"}), 200
 
 if __name__ == '__main__':

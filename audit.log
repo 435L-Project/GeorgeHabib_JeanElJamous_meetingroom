@@ -1,0 +1,11 @@
+Review updated: review ID 2020 was updated.
+Review deleted: review ID 202 was removed from the system.
+Booking Created: User 23 reserved Room 1 from 2025-12-20 10:00:00 to 2025-12-20 11:00:00.
+Booking Cancelled: Reservation ID 110 was cancelled.
+Room created: 'room 1' (ID: 115, capacity: 13) at building A, floor 2.
+Room Updated: Room ID 115 details were modified.
+Room Deleted: Room ID 11 was removed from inventory.
+User registered: Username 'king' (User) joined the system.
+User login: 'king' authenticated successfully.
+User profile updated: account 'king was modified
+User deleted: account 'king' was permanently removed.

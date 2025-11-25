@@ -1,9 +1,12 @@
 from cryptography.fernet import Fernet
 import os
 
-ENCRYPTION_KEY = b'WiSMOi0a4KYxgVUV8hRhYGhSMXOuGeFnKLEg6Xc6rqg='
+key = os.environ.get('ENCRYPTION_KEY')
 
-cipher_suite = Fernet(ENCRYPTION_KEY)
+if not key:
+    raise ValueError("No ENCRYPTION_KEY found in environment variables!")
+
+cipher_suite = Fernet(key.encode() if isinstance(key, str) else key)
 
 def encrypt_data(plain_text):
     """Encrypts a string"""

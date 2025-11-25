@@ -5,9 +5,9 @@ services:
     container_name: meeting_room_db
     restart: always
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: password123
-      POSTGRES_DB: meeting_room_db
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     ports:
       - "5432:5432"
     volumes:
@@ -31,8 +31,10 @@ services:
         condition: service_healthy
     environment:
       # Tells Python to look for the container named 'db' instead of 'localhost'
-      DATABASE_URL: postgresql://admin:password123@db:5432/meeting_room_db
+      DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
       BOOKINGS_API_URL: http://bookings_service:5003/bookings
+      # Pass the encryption key
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY}
 
   # 3. Rooms Service
   rooms_service:
@@ -46,7 +48,7 @@ services:
       db:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgresql://admin:password123@db:5432/meeting_room_db
+      DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
 
   # 4. Bookings Service
   bookings_service:
@@ -60,7 +62,7 @@ services:
       db:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgresql://admin:password123@db:5432/meeting_room_db
+      DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
 
   # 5. Reviews Service
   reviews_service:
@@ -74,7 +76,7 @@ services:
       db:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgresql://admin:password123@db:5432/meeting_room_db
+      DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
 
 volumes:
   postgres_data:

@@ -6,9 +6,11 @@ import os
 try:
     from models import db, User
     from logger import audit_logger
+    from crypto_utils import encrypt_data, decrypt_data
 except ImportError:
     from users_service.models import db, User
     from users_service.logger import audit_logger
+    from users_service.crypto_utils import encrypt_data, decrypt_data
 
 app = Flask(__name__)
 # Use 'db' if in Docker, 'localhost' if local
@@ -47,8 +49,11 @@ def register():
 
     hashed_password = generate_password_hash(data['password'], method='pbkdf2:sha256')
 
+    # The new encryption update (encrypting the name)
+    encrypted_name = encrypt_data(data['full_name'])
+
     the_new_user = User(
-        full_name=data['full_name'],
+        full_name=encrypted_name,
         username=data['username'],
         email=data['email'],
         password=hashed_password,
@@ -85,8 +90,11 @@ def login():
     # audit log
     audit_logger.info(f"User login: '{user.username}' authenticated successfully.")
 
+    # decrypting the user name
+    user_data = user.to_dict()
+    user_data['full_name'] = decrypt_data(user.full_name)
 
-    return jsonify({'message': 'Login successful', 'user': user.to_dict()}), 200
+    return jsonify({'message': 'Login successful', 'user': user_data}), 200
 
 
 @app.route('/users/<username>', methods=['GET'])
@@ -104,6 +112,9 @@ def get_user(username):
     if not user:
         return jsonify({'message': 'User not found'}), 404
     
+    # decrypting the user name 
+    user_data = user.to_dict()
+    user_data['full_name'] = decrypt_data(user.full_name)
     return jsonify(user.to_dict()), 200
 
 
@@ -124,7 +135,8 @@ def update_user(username):
         return jsonify({'message': 'User not found'}), 404
 
     if 'full_name' in data:
-        user.full_name = data['full_name']
+        # Encrypt the full name before storing
+        user.full_name = encrypt_data(data['full_name'])
     if 'email' in data:
         user.email = data['email']
     if 'password' in data:

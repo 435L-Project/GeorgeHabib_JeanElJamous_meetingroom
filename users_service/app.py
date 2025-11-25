@@ -5,8 +5,10 @@ import os
 
 try:
     from models import db, User
+    from logger import audit_logger
 except ImportError:
     from users_service.models import db, User
+    from users_service.logger import audit_logger
 
 app = Flask(__name__)
 # Use 'db' if in Docker, 'localhost' if local
@@ -56,6 +58,9 @@ def register():
     db.session.add(the_new_user)
     db.session.commit()
 
+    # audit log
+    audit_logger.info(f"User registered: Username '{data['username']}' ({data['role']}) joined the system.")
+
     return jsonify({'message': 'User registered successfully'}), 201
 
 @app.route('/users/login', methods=['POST'])
@@ -76,6 +81,10 @@ def login():
 
     if not user or not check_password_hash(user.password, data['password']):
         return jsonify({'message': 'Invalid username or password'}), 401
+
+    # audit log
+    audit_logger.info(f"User login: '{user.username}' authenticated successfully.")
+
 
     return jsonify({'message': 'Login successful', 'user': user.to_dict()}), 200
 
@@ -123,6 +132,9 @@ def update_user(username):
 
     db.session.commit()
 
+    # audit log
+    audit_logger.info(f"User profile updated: account '{username} was modified")
+
     return jsonify({'message': 'User updated successfully'}), 200
 
 
@@ -143,6 +155,8 @@ def delete_user(username):
 
     db.session.delete(user)
     db.session.commit()
+
+    audit_logger.warning(f"User deleted: account '{username}' was permanently removed.")
 
     return jsonify({'message': 'User deleted successfully'}), 200
 

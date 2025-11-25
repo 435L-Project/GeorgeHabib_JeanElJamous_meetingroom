@@ -11,8 +11,10 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 try:
     from models import db, Booking
+    from logger import audit_logger
 except ImportError:
     from bookings_service.models import db, Booking
+    from bookings_service.logger import audit_logger
 
 
 db.init_app(app)
@@ -57,6 +59,11 @@ def create_booking():
     )
     db.session.add(new_booking)
     db.session.commit()
+
+    # audit log
+    audit_logger.info(f"Booking Created: User {data['user_id']} reserved Room {room_id} from {start} to {end}.")
+
+
     return jsonify({"message": "Booking successful", "booking": new_booking.to_dict()}), 201
 
 @app.route('/bookings', methods=['GET'])
@@ -81,6 +88,10 @@ def cancel_booking(id):
     booking = Booking.query.get_or_404(id)
     db.session.delete(booking)
     db.session.commit()
+
+    # audit log
+    audit_logger.warning(f"Booking Cancelled: Reservation ID {id} was cancelled.")
+
     return jsonify({"message": "Booking cancelled"}), 200
 
 

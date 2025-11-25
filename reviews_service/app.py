@@ -10,7 +10,9 @@ except ImportError:
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:password123@localhost:5432/meeting_room_db'
+# Use 'db' if in Docker, 'localhost' if local
+db_url = os.environ.get('DATABASE_URL', 'postgresql://admin:password123@localhost:5432/meeting_room_db')
+app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
@@ -156,4 +158,4 @@ def moderate_review(review_id):
     return jsonify({'message': 'Invalid moderation action'}), 400
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5004)
+    app.run(host='0.0.0.0', debug=True, port=5004)

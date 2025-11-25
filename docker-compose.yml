@@ -1,6 +1,7 @@
 services:
+  # 1. Database
   db:
-    image: postgres:15 
+    image: postgres:15
     container_name: meeting_room_db
     restart: always
     environment:
@@ -8,9 +9,72 @@ services:
       POSTGRES_PASSWORD: password123
       POSTGRES_DB: meeting_room_db
     ports:
-      - "5432:5432"  
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d meeting_room_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # 2. Users Service
+  users_service:
+    build: .
+    command: python users_service/app.py
+    ports:
+      - "5001:5001"
+    volumes:
+      - .:/app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # Tells Python to look for the container named 'db' instead of 'localhost'
+      DATABASE_URL: postgresql://admin:password123@db:5432/meeting_room_db
+      BOOKINGS_API_URL: http://bookings_service:5003/bookings
+
+  # 3. Rooms Service
+  rooms_service:
+    build: .
+    command: python rooms_service/app.py
+    ports:
+      - "5002:5002"
+    volumes:
+      - .:/app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://admin:password123@db:5432/meeting_room_db
+
+  # 4. Bookings Service
+  bookings_service:
+    build: .
+    command: python bookings_service/app.py
+    ports:
+      - "5003:5003"
+    volumes:
+      - .:/app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://admin:password123@db:5432/meeting_room_db
+
+  # 5. Reviews Service
+  reviews_service:
+    build: .
+    command: python reviews_service/app.py
+    ports:
+      - "5004:5004"
+    volumes:
+      - .:/app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://admin:password123@db:5432/meeting_room_db
 
 volumes:
-  postgres_data:  
+  postgres_data:

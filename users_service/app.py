@@ -9,8 +9,13 @@ except ImportError:
     from users_service.models import db, User
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:password123@localhost:5432/meeting_room_db'
+# Use 'db' if in Docker, 'localhost' if local
+db_host = os.environ.get('DB_HOST', 'localhost')
+db_url = os.environ.get('DATABASE_URL', 'postgresql://admin:password123@localhost:5432/meeting_room_db')
+app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+
 
 # in this line, i am trying to initialize the database with the app
 db.init_app(app)
@@ -156,7 +161,8 @@ def get_user_bookings(username):
     if not user:
         return jsonify({'message': 'User not found'}), 404
     
-    response = request.get('http://localhost:5003/bookings')
+    bookings_url = os.environ.get('BOOKINGS_API_URL', 'http://localhost:5003/bookings')
+    response = requests.get(bookings_url)
 
     if response.status_code == 200:
         all_bookings = response.json()
@@ -169,4 +175,4 @@ def get_user_bookings(username):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    app.run(host='0.0.0.0', debug=True, port=5001)

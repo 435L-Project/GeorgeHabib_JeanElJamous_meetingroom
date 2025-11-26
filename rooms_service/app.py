@@ -72,28 +72,21 @@ def create_room():
 
 @app.route('/rooms', methods=['GET'])
 def get_rooms():
-    # 1. GENERATE A UNIQUE CACHE KEY
-    # We use request.full_path so that "/rooms?capacity=5" and "/rooms?capacity=10" 
-    # are stored as different cache entries.
     cache_key = f"rooms_data_{request.full_path}"
 
-    # 2. CHECK REDIS (The "Fast" Path)
+    # check redis (The "Fast" Path)
     if cache:
         try:
             cached_data = cache.get(cache_key)
             if cached_data:
-                # --- CACHE HIT ---
                 print(f"CACHE HIT: Retrieved {cache_key} from Redis")
-                # We return immediately. We DO NOT sleep.
                 return jsonify(json.loads(cached_data)), 200
         except redis.exceptions.ConnectionError:
-            print("⚠️ Redis unavailable, falling back to DB")
+            print("Redis unavailable, falling back to DB")
 
-    # 3. DATABASE QUERY (The "Slow" Path)
-    # If we are here, the data was NOT in Redis.
+    # database query (The "Slow" Path)
     print(f"CACHE MISS: Querying Database for {cache_key}")
     
-    # --- SIMULATED LAG ---
     # We delay here to prove that the database is "slow" compared to Redis.
     time.sleep(2) 
 
@@ -112,7 +105,7 @@ def get_rooms():
     rooms = query.all()
     response_data = [room.to_dict() for room in rooms]
 
-    # 4. STORE IN REDIS (Populate Cache)
+    # store in redis (Populate the Cache)
     if cache:
         try:
             # Store the data for 60 seconds

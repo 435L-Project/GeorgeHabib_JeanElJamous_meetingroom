@@ -4,8 +4,6 @@ import time
 import sys
 import os
 
-# Ensure we can find the rooms_service module
-sys.path.append(os.getcwd())
 
 from memory_profiler import profile
 from rooms_service.app import app, cache
@@ -21,7 +19,6 @@ def simulation_run():
     with app.app_context():
         client = app.test_client()
 
-        # --- RESET CACHE ---
         if cache:
             try:
                 cache.flushdb()
@@ -29,16 +26,15 @@ def simulation_run():
             except Exception:
                 pass
 
-        # 1. SETUP DATA
+        # Setup the data
         print("--- 1. Creating Test Data ---")
         for i in range(5): 
             data = TEST_ROOM_DATA.copy()
             data['name'] = f"Profile Room {i}"
             client.post('/rooms', json=data)
 
-        # ==========================================
-        # PROFILER 1: THE REFERENCE (Cold Run)
-        # ==========================================
+       
+        # Profiler 1: The reference (Cold Run)
         print("\n--- 2. STARTING REFERENCE PROFILE (Cold Run) ---")
         ref_profiler = cProfile.Profile()
         ref_profiler.enable()
@@ -49,10 +45,8 @@ def simulation_run():
         
         ref_profiler.disable()
         print(f"Reference Time: {time.time() - start_time:.2f}s")
-
-        # ==========================================
-        # PROFILER 2: THE OPTIMIZED (Warm Run)
-        # ==========================================
+    
+        # Profiler 2: The optimized (Warm Run)
         print("\n--- 3. STARTING OPTIMIZED PROFILE (Warm Run) ---")
         opt_profiler = cProfile.Profile()
         opt_profiler.enable()
@@ -64,9 +58,7 @@ def simulation_run():
         opt_profiler.disable()
         print(f"Optimized Time: {time.time() - start_time:.2f}s")
 
-        # ==========================================
-        # PRINT RESULTS
-        # ==========================================
+        # Results        
         print("\n" + "="*50)
         print("   RESULT 1: REFERENCE (BEFORE OPTIMIZATION)")
         print("="*50)
@@ -78,6 +70,7 @@ def simulation_run():
         print("="*50)
         stats_opt = pstats.Stats(opt_profiler).sort_stats('cumtime')
         stats_opt.print_stats(10)
+        
 
 # Memory Profiling Wrapper
 @profile

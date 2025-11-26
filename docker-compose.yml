@@ -17,6 +17,18 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+  
+  # 6. Redis Cache
+  redis:
+    image: redis:alpine
+    container_name: meeting_room_redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   # 2. Users Service
   users_service:
@@ -47,9 +59,12 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     environment:
       DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
-
+      REDIS_URL: redis://redis:6379/0 # Redis connection for caching
+      PYTHONUNBUFFERED: 1
   # 4. Bookings Service
   bookings_service:
     build: .

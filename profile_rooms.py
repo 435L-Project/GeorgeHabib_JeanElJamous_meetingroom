@@ -1,8 +1,14 @@
 import cProfile
 import pstats
-from memory_profiler import profile
-from rooms_service.app import app, db, Room
+import time
+import sys
+import os
 
+# Ensure we can find the rooms_service module
+sys.path.append(os.getcwd())
+
+from memory_profiler import profile
+from rooms_service.app import app, cache
 
 TEST_ROOM_DATA = {
     "name": "Profiling Room",
@@ -11,35 +17,90 @@ TEST_ROOM_DATA = {
     "location": "Building A"
 }
 
-# 1. Function to Profile 
 def simulation_run():
-    """Runs a sequence of Room Creations and Searches."""
     with app.app_context():
         client = app.test_client()
 
-        for i in range(50):
+        # --- RESET CACHE ---
+        if cache:
+            try:
+                cache.flushdb()
+                print("\n[RESET] Redis Cache Cleared")
+            except Exception:
+                pass
+
+        # 1. SETUP DATA
+        print("--- 1. Creating Test Data ---")
+        for i in range(5): 
             data = TEST_ROOM_DATA.copy()
             data['name'] = f"Profile Room {i}"
             client.post('/rooms', json=data)
 
-        for _ in range(50):
-            client.get('/rooms?capacity=5')
+        # ==========================================
+        # PROFILER 1: THE REFERENCE (Cold Run)
+        # ==========================================
+        print("\n--- 2. STARTING REFERENCE PROFILE (Cold Run) ---")
+        ref_profiler = cProfile.Profile()
+        ref_profiler.enable()
 
-# 2. Memory Profiling Wrapper
+        start_time = time.time()
+        for i in range(5):
+            client.get(f'/rooms?capacity={5+i}')
+        
+        ref_profiler.disable()
+        print(f"Reference Time: {time.time() - start_time:.2f}s")
+
+        # ==========================================
+        # PROFILER 2: THE OPTIMIZED (Warm Run)
+        # ==========================================
+        print("\n--- 3. STARTING OPTIMIZED PROFILE (Warm Run) ---")
+        opt_profiler = cProfile.Profile()
+        opt_profiler.enable()
+
+        start_time = time.time()
+        for i in range(5):
+            client.get(f'/rooms?capacity={5+i}')
+            
+        opt_profiler.disable()
+        print(f"Optimized Time: {time.time() - start_time:.2f}s")
+
+        # ==========================================
+        # PRINT RESULTS
+        # ==========================================
+        print("\n" + "="*50)
+        print("   RESULT 1: REFERENCE (BEFORE OPTIMIZATION)")
+        print("="*50)
+        stats_ref = pstats.Stats(ref_profiler).sort_stats('cumtime')
+        stats_ref.print_stats(10)
+
+        print("\n" + "="*50)
+        print("   RESULT 2: OPTIMIZED (AFTER OPTIMIZATION)")
+        print("="*50)
+        stats_opt = pstats.Stats(opt_profiler).sort_stats('cumtime')
+        stats_opt.print_stats(10)
+
+# Memory Profiling Wrapper
 @profile
 def memory_test():
-    simulation_run()
+    # We just run the logic, no need for cProfile here
+    with app.app_context():
+        client = app.test_client()
+        # Reset again for memory test
+        if cache: cache.flushdb() 
+        
+        # Setup
+        for i in range(5): 
+            data = TEST_ROOM_DATA.copy()
+            data['name'] = f"Profile Room {i}"
+            client.post('/rooms', json=data)
+
+        # Cold Run
+        for i in range(5): client.get(f'/rooms?capacity={5+i}')
+        # Warm Run
+        for i in range(5): client.get(f'/rooms?capacity={5+i}')
 
 if __name__ == "__main__":
-    print("--- Starting Rooms Service Profiling ---")
-    profiler = cProfile.Profile()
-    profiler.enable()
-    
     simulation_run()
-    
-    profiler.disable()
-    stats = pstats.Stats(profiler).sort_stats('cumtime')
-    stats.print_stats(10)
     
     print("\n--- Starting Memory Profiling ---")
     memory_test()

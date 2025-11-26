@@ -1,4 +1,35 @@
 services:
+# --- INSTANCE 1 ---
+  rooms_service_1:
+    build: .
+    command: python rooms_service/app.py
+    # We DO NOT expose ports here. Only Nginx communicates with them.
+    environment:
+      - DATABASE_URL=postgresql://admin:securepassword123@db:5432/meeting_room_db
+    depends_on:
+      - db
+
+  # --- INSTANCE 2 ---
+  rooms_service_2:
+    build: .
+    command: python rooms_service/app.py
+    # Identical configuration to Instance 1
+    environment:
+      - DATABASE_URL=postgresql://admin:securepassword123@db:5432/meeting_room_db
+    depends_on:
+      - db
+
+  # --- LOAD BALANCER ---
+  nginx:
+    image: nginx:latest
+    ports:
+      - "4000:80"  # We access the app via localhost:4000
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - rooms_service_1
+      - rooms_service_2
+
   # 1. Database
   db:
     image: postgres:15

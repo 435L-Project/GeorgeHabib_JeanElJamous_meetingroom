@@ -4,18 +4,19 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import os
 
 try:
-    from models import db, User
-    from logger import audit_logger
-    from crypto_utils import encrypt_data, decrypt_data
-except ImportError:
     from users_service.models import db, User
     from users_service.logger import audit_logger
     from users_service.crypto_utils import encrypt_data, decrypt_data
+except ImportError:
+    from models import db, User
+    from logger import audit_logger
+    from crypto_utils import encrypt_data, decrypt_data
+
 
 app = Flask(__name__)
 # Use 'db' if in Docker, 'localhost' if local
 db_host = os.environ.get('DB_HOST', 'localhost')
-db_url = os.environ.get('DATABASE_URL', 'postgresql://admin:password123@localhost:5432/meeting_room_db')
+db_url = os.environ.get('DATABASE_URL', 'postgresql://admin:securepassword123@localhost:5432/meeting_room_db')
 app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 

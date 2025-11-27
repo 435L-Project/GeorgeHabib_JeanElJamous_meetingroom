@@ -5,7 +5,7 @@ import os
 app = Flask(__name__)
 
 # Use 'db' if in Docker, 'localhost' if local
-db_url = os.environ.get('DATABASE_URL', 'postgresql://admin:password123@localhost:5432/meeting_room_db')
+db_url = os.environ.get('DATABASE_URL', 'postgresql://admin:securepassword123@localhost:5432/meeting_room_db')
 app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 

@@ -1,5 +1,6 @@
 import pytest
 from app import app, db, User
+from crypto_utils import decrypt_data
 
 @pytest.fixture
 def client():
@@ -74,7 +75,10 @@ def test_update_user(client):
     assert response.status_code ==200
 
     get_resp = client.get(f'/users/{user_data["username"]}')
-    assert get_resp.json['full_name'] == "Updated Name"
+    encrypted_name = get_resp.json['full_name']
+    decrypted_name = decrypt_data(encrypted_name)
+    
+    assert decrypted_name == "Updated Name"
 
 
 def test_delete_user(client):

@@ -1,17 +1,20 @@
 import os
 import json
 import redis
+import sys
 from flask import Flask, request, jsonify
 from rooms_service.models import db, Room
 
 app = Flask(__name__)
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# --- CONFIGURATION ---
+
+# CONFIGURATION
 db_url = os.environ.get('DATABASE_URL', 'postgresql://admin:securepassword123@localhost:5432/meeting_room_db')
 app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# --- REDIS SETUP (From Caching Task) ---
+# REDIS SETUP (From Caching Task)
 redis_url = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
 try:
     cache = redis.from_url(redis_url)
@@ -28,7 +31,7 @@ with app.app_context():
     except:
         pass
 
-# --- CACHE HELPER ---
+# CACHE HELPER 
 def invalidate_rooms_cache():
     if cache:
         try:
@@ -68,6 +71,8 @@ def get_rooms():
                 return jsonify(json.loads(cached_data)), 200
         except:
             pass
+    import time
+    time.sleep(2)
 
     # 3. DATABASE QUERY (Standard Path)
 

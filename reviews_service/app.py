@@ -47,7 +47,7 @@ def submit_review():
     cleaned_comment = bleach.clean(data['comment'])
 
     new_review = Review(
-        user_username=data['user_username'],
+        user_id=data['user_id'],
         room_id=data['room_id'],
         rating=data['rating'],
         comment=cleaned_comment

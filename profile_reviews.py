@@ -4,7 +4,7 @@ from memory_profiler import profile
 from reviews_service.app import app, db, Review
 
 TEST_REVIEW_DATA = {
-    "user_username": "prof_reviewer",
+    "user_id": 10,
     "room_id": 101,
     "rating": 5,
     "comment": "This is a great room! <script>alert('xss')</script> <b>Bold</b>" 

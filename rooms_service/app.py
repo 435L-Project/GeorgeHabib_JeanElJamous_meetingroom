@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import os
+import socket
 
 app = Flask(__name__)
 
@@ -81,8 +82,15 @@ def get_rooms():
     if equipment:
         query = query.filter(Room.equipment.ilike(f"%{equipment}%"))
         
-    rooms = query.all()
-    return jsonify([room.to_dict() for room in rooms]), 200
+    rooms = Room.query.all()
+
+    results = [room.to_dict() for room in rooms]
+    response = {
+            "server_id": socket.gethostname(), # This will print the Container ID
+            "data": results
+        }
+    
+    return jsonify(response), 200
 
 
 @app.route('/rooms/<int:id>', methods=['PUT'])

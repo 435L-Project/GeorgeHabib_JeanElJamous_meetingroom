@@ -29,7 +29,7 @@ def submit_review():
     Submit a new review for a meeting room.
 
     Expected JSON Input:
-        - user_username (str): The username of the reviewer.
+        - user_id (int): The ID of the reviewer.
         - room_id (int): The ID of the meeting room being reviewed.
         - rating (int): The rating given to the room (1-5).
         - comment (str): the review text (will be sanitized).

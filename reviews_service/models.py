@@ -9,8 +9,8 @@ class Review(db.Model):
 
     :param id: Unique identifier for the review.
     :type id: int
-    :param user_username: Username of the user who wrote the review.
-    :type user_username: str
+    :param user_id: ID of the user who wrote the review.
+    :type user_username: int
     :param room_id: ID of the room being reviewed.
     :type room_id: int
     :param rating: Rating given by the user (1-5).

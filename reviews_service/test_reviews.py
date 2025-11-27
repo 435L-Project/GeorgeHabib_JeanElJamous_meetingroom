@@ -10,7 +10,7 @@ def client():
 @pytest.fixture
 def random_review(client):
     review_data = {
-        "user_username": "pytest_reviewer",
+        "user_id": 99,
         "room_id": 999,
         "rating": 5,
         "comment": "Nice room"
@@ -19,13 +19,13 @@ def random_review(client):
     
     # Get the review from DB to find its ID
     with app.app_context():
-        review = Review.query.filter_by(user_username="pytest_reviewer").order_by(Review.id.desc()).first()
+        review = Review.query.filter_by(user_id=99).order_by(Review.id.desc()).first()
         return review.id
 
 def test_submit_review(client):
     """Test API: Submit a review"""
     data = {
-        "user_username": "simple_user",
+        "user_id": 1,
         "room_id": 101,
         "rating": 4,
         "comment": "Great!"
@@ -36,7 +36,7 @@ def test_submit_review(client):
 def test_sanitization(client):
     """Test API: Check if scripts are cleaned"""
     data = {
-        "user_username": "hacker_user",
+        "user_id": 2,
         "room_id": 102,
         "rating": 1,
         "comment": "<script>alert('bad')</script>"

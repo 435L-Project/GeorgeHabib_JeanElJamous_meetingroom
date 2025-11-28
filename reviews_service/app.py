@@ -119,6 +119,13 @@ def delete_review(review_id):
 @app.route('/reviews/moderate/<int:review_id>', methods=['POST'])
 def moderate_review(review_id):
     """Flags a review as inappropriate."""
+
+    user_role = request.headers.get('X-User-Role')
+
+    if user_role not in ['admin','moderator']:
+        return jsonify({"error": "Unauthorized to moderate reviews: Only admins and moderators can flag reviews"}), 403
+
+
     data = request.get_json()
     review = Review.query.get_or_404(review_id)
 

@@ -83,6 +83,17 @@ def get_user(username):
 
 @app.route('/users/<username>', methods=['PUT'])
 def update_user(username):
+
+    current_username = request.headers.get('X-User-Name')
+
+    user_role = request.headers.get('X-User-Role')
+
+    if user_role != 'admin' and current_username != username:
+        return jsonify({'message': 'Unauthorized, you can only update your own profile'}), 403
+
+
+
+
     data = request.get_json()
     user = User.query.filter_by(username=username).first()
 

@@ -2485,3 +2485,7 @@ Booking Created: User 1 reserved Room 999 from 2025-12-05 10:00:00 to 2025-12-05
 Booking Created: User 1 reserved Room 999 from 2025-12-05 11:00:00 to 2025-12-05 12:00:00.
 User login: 'agent' authenticated successfully.
 Booking Created: User 1 reserved Room 1 from 2025-11-20 10:00:00 to 2025-11-20 11:00:00.
+User login: 'agent' authenticated successfully.
+Review moderated: review ID 15 flagged.
+User registered: Username 'geohabib' joined.
+User login: 'geohabib' authenticated successfully.

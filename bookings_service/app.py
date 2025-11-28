@@ -44,7 +44,6 @@ def get_booking_analytics():
     """Returns aggregated statistics about bookings."""
     total_bookings = db.session.query(func.count(Booking.id)).scalar()
    
-    # Find most booked room
     popular_room = db.session.query(
         Booking.room_id, func.count(Booking.room_id)
     ).group_by(Booking.room_id).order_by(func.count(Booking.room_id).desc()).first()
@@ -56,9 +55,9 @@ def get_booking_analytics():
     }
     return jsonify(stats), 200
 
-# --- 4. Standard Endpoints (Merged Logic) ---
 
-@app.route('/bookings', methods=['POST']) # Removed /api/v1
+
+@app.route('/bookings', methods=['POST']) 
 def create_booking():
     data = request.get_json()
     room_id = data['room_id']
@@ -88,21 +87,26 @@ def create_booking():
     audit_logger.info(f"Booking Created: User {data['user_id']} reserved Room {room_id} from {start} to {end}.")
     return jsonify({"message": "Booking successful", "booking": new_booking.to_dict()}), 201
 
-@app.route('/bookings', methods=['GET']) # Removed /api/v1
+@app.route('/bookings', methods=['GET']) 
 def get_bookings():
     bookings = Booking.query.all()
     return jsonify([b.to_dict() for b in bookings]), 200
 
-@app.route('/bookings/cancel/<int:id>', methods=['DELETE']) # Removed /api/v1
+@app.route('/bookings/cancel/<int:id>', methods=['DELETE']) 
 def cancel_booking(id):
+
+    current_user_id = request.headers.get('X-User-ID')
+
     booking = Booking.query.get_or_404(id)
+    if str(booking.user_id) != str(current_user_id):
+        return jsonify({"error": "Unauthorized to cancel this booking"}), 403
     db.session.delete(booking)
     db.session.commit()
    
     audit_logger.warning(f"Booking Cancelled: Reservation ID {id} was cancelled.")
     return jsonify({"message": "Booking cancelled"}), 200
 
-@app.route('/bookings/check', methods=['POST']) # Removed /api/v1
+@app.route('/bookings/check', methods=['POST']) 
 def check_availability():
     data = request.get_json()
     room_id = data['room_id']

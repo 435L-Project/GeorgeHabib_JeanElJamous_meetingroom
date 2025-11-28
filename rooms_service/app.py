@@ -59,6 +59,13 @@ def invalidate_rooms_cache():
 
 @app.route('/rooms', methods=['POST'])
 def create_room():
+
+    user_role = request.headers.get('X-User-Role')
+
+    if user_role not in ['admin', 'facility_manager']:
+        return jsonify({"error": "Unauthorized to create room: Only Admins or Facility Managers can add rooms"}), 403
+
+
     data = request.get_json()
     new_room = Room(
         name=data['name'],
@@ -122,6 +129,11 @@ def update_room(id):
 
 @app.route('/rooms/<int:id>', methods=['DELETE'])
 def delete_room(id):
+
+    user_role = request.headers.get('X-User-Role')
+    if not user_role or user_role.lower() != 'admin':
+        return jsonify({"error": "Unauthorized to delete room"}), 403
+
     room = Room.query.get_or_404(id)
     db.session.delete(room)
     db.session.commit()

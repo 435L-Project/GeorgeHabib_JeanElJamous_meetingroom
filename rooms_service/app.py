@@ -59,7 +59,18 @@ def invalidate_rooms_cache():
 
 @app.route('/rooms', methods=['POST'])
 def create_room():
+    """
+    Creates a new meeting room.
 
+    Expected JSON input:
+        - name (str): Name of the room
+        - capacity (int): Maximum number of people in the room
+        - equipment (str): Equipment available in the room
+        - location (str): Location of the room
+
+    :return: JSON message and status code 201
+    :rtype: tuple
+    """
     user_role = request.headers.get('X-User-Role')
 
     if user_role not in ['admin', 'facility_manager']:
@@ -80,6 +91,17 @@ def create_room():
 
 @app.route('/rooms', methods=['GET'])
 def get_rooms():
+    """
+    Retrieves available rooms based on capacity, location, and equipment.
+
+    Parameters:
+        - capacity (int): Minimum capacity required.
+        - location (str): Substring match for location.
+        - equipment (str): Substring match for equipment.
+
+    :return: List of room objects matching the criteria.
+    :rtype: tuple
+    """
     cache_key = f"rooms_data_{request.full_path}"
    
     # Check Redis
@@ -117,6 +139,14 @@ def get_rooms():
 
 @app.route('/rooms/<int:id>', methods=['PUT'])
 def update_room(id):
+    """
+    Updates room details (capacity, equipment).
+
+    :param id: The ID of the room to update
+    :type id: int
+    :return: JSON message
+    :rtype: tuple
+    """
     room = Room.query.get_or_404(id)
     data = request.get_json()
     if 'capacity' in data:
@@ -129,7 +159,14 @@ def update_room(id):
 
 @app.route('/rooms/<int:id>', methods=['DELETE'])
 def delete_room(id):
+    """
+    Deletes a room by ID.
 
+    :param id: The ID of the room to delete
+    :type id: int
+    :return: JSON message
+    :rtype: tuple
+    """
     user_role = request.headers.get('X-User-Role')
     if not user_role or user_role.lower() != 'admin':
         return jsonify({"error": "Unauthorized to delete room"}), 403

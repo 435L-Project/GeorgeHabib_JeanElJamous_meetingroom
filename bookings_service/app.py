@@ -41,7 +41,11 @@ with app.app_context():
 
 @app.route('/api/v1/analytics', methods=['GET'])
 def get_booking_analytics():
-    """Returns aggregated statistics about bookings."""
+    """Returns aggregated statistics about bookings.
+    
+    :return: JSON with total bookings, most popular room, and its booking count.
+    :rtype: tuple
+    """
     total_bookings = db.session.query(func.count(Booking.id)).scalar()
    
     popular_room = db.session.query(
@@ -59,6 +63,19 @@ def get_booking_analytics():
 
 @app.route('/bookings', methods=['POST']) 
 def create_booking():
+    """
+    Creates a booking if the room is available.
+    checks for time conflicts before saving.
+
+    Expected JSON input:
+        - user_id (int)
+        - room_id (int)
+        - start_time (str): ISO format datetime string
+        - end_time (str): ISO format datetime string
+
+    :return: JSON success message or 409 conflict error.
+    :rtype: tuple
+    """
     data = request.get_json()
     room_id = data['room_id']
     start = datetime.fromisoformat(data['start_time'])
@@ -89,12 +106,23 @@ def create_booking():
 
 @app.route('/bookings', methods=['GET']) 
 def get_bookings():
+    """Retrieves all bookings.
+    
+    :return: List of all bookings.
+    :rtype: tuple    
+    """
     bookings = Booking.query.all()
     return jsonify([b.to_dict() for b in bookings]), 200
 
 @app.route('/bookings/cancel/<int:id>', methods=['DELETE']) 
 def cancel_booking(id):
-
+    """Cancels (deletes) a booking by ID.
+    
+    :param id: ID of the booking to cancel.
+    :type id: int
+    :return: JSON success message.
+    :rtype: tuple
+    """
     current_user_id = request.headers.get('X-User-ID')
 
     booking = Booking.query.get_or_404(id)
@@ -108,6 +136,17 @@ def cancel_booking(id):
 
 @app.route('/bookings/check', methods=['POST']) 
 def check_availability():
+    """
+    Checks if a room is available for a specific time slot.
+
+    Expected JSON input:
+        - room_id (int)
+        - start_time (str)
+        - end_time (str)
+
+    :return: JSON availability status.
+    :rtype: tuple
+    """
     data = request.get_json()
     room_id = data['room_id']
     start = datetime.fromisoformat(data['start_time'])

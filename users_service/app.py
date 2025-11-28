@@ -37,6 +37,18 @@ with app.app_context():
 
 @app.route('/users/register', methods=['POST'])
 def register():
+    """Register a new user in the system.
+
+    Expected JSON input:
+        - full_name (str): Full name of the user
+        - username (str): Unique username for the user
+        - email (str): Email address of the user
+        - password (str): Plain text password for the user account (will be hashed)
+        - role (str): Role of the user
+
+    :return: JSON response indicating success or failure of registration.
+    :rtype: tuple    
+    """
     data = request.get_json()
     if User.query.filter_by(username=data['username']).first():
         return jsonify({'message': 'Username already exists'}), 400
@@ -60,6 +72,16 @@ def register():
 
 @app.route('/users/login', methods=['POST'])
 def login():
+    """Authenticate a user and return their details.
+
+    Expected JSON input:
+        - username (str): Login username of the user
+        - password (str): Login password of the user
+    
+    :return: JSON response containing the user object and success message.
+    :rtype: tuple
+    
+    """
     data = request.get_json()
     user = User.query.filter_by(username=data['username']).first()
 
@@ -73,6 +95,13 @@ def login():
 
 @app.route('/users/<username>', methods=['GET'])
 def get_user(username):
+    """Retrieve user details by username.
+    
+    :param username: The unique username of the usre to retrieve
+    :type username: str
+    :return: JSON user object or error message
+    :rtype: tuple  
+    """
     user = User.query.filter_by(username=username).first()
     if not user:
         return jsonify({'message': 'User not found'}), 404
@@ -83,7 +112,13 @@ def get_user(username):
 
 @app.route('/users/<username>', methods=['PUT'])
 def update_user(username):
-
+    """Update user details by username.
+    
+    :param username: The username of the user to update
+    :type username: str
+    :return: JSON success message.
+    :rtype: tuple
+    """
     current_username = request.headers.get('X-User-Name')
 
     user_role = request.headers.get('X-User-Role')
@@ -113,6 +148,13 @@ def update_user(username):
 
 @app.route('/users/<username>', methods=['DELETE'])
 def delete_user(username):
+    """Permanently delete a user account from the database.
+    
+    :param username: The username of the account to delete.
+    :type username: str
+    :return: JSON success or error message.
+    :rtype: tuple    
+    """
     user = User.query.filter_by(username=username).first()
     if not user:
         return jsonify({'message': 'User not found'}), 404
@@ -124,6 +166,14 @@ def delete_user(username):
 
 @app.route('/users/<username>/bookings', methods=['GET'])
 def get_user_bookings(username):
+    """Retrieve the booking history for a specific user.
+    
+    :param username: The username to fetch bookings for.
+    :type username: str
+    :return: JSON list of bookings or error message.
+    :rtype: tuple
+    """
+    
     user = User.query.filter_by(username=username).first()
     if not user:
         return jsonify({'message': 'User not found'}), 404

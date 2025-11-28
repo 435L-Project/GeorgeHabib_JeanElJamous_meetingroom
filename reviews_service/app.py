@@ -4,11 +4,9 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
 import bleach
 
-# --- 1. Imports (Docker Compatible) ---
 try:
     from reviews_service.models import db, Review
     from reviews_service.logger import audit_logger
-    # Try importing errors if the file exists
     try:
         from reviews_service.errors import register_error_handlers
     except ImportError:
@@ -23,15 +21,12 @@ except ImportError:
 
 app = Flask(__name__)
 
-# --- 2. Configuration ---
-# Use Postgres for Docker
 db_url = os.environ.get('DATABASE_URL', 'postgresql://admin:securepassword123@localhost:5432/meeting_room_db')
 app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 
-# Register error handlers if available
 try:
     register_error_handlers(app)
 except NameError:
@@ -43,10 +38,13 @@ with app.app_context():
     except:
         pass
 
-# --- 3. New Analytics Endpoint (Task 5) ---
 @app.route('/api/v1/analytics', methods=['GET'])
 def get_review_analytics():
-    """Returns aggregated statistics about reviews."""
+    """Returns aggregated statistics about reviews.
+    
+    :return: JSON object containing the global average rating and total number of reviews.
+    :rtype: tuple
+    """
     avg_rating = db.session.query(func.avg(Review.rating)).scalar()
     total_reviews = db.session.query(func.count(Review.id)).scalar()
    
@@ -56,11 +54,23 @@ def get_review_analytics():
     }
     return jsonify(stats), 200
 
-# --- 4. Standard Routes (Merged Logic) ---
+
 
 @app.route('/reviews', methods=['POST'])
 def submit_review():
-    """Submit a new review for a meeting room."""
+    """
+    Submit a new review for a meeting room.
+
+    Expected JSON Input:
+        - user_username (str): The username of the reviewer.
+        - room_id (int): The ID of the meeting room being reviewed.
+        - rating (int): The rating given to the room (1-5).
+        - comment (str): the review text (will be sanitized).
+
+    :return: JSON success message.
+    :rtype: tuple
+    
+    """
     data = request.get_json()
 
     if not (1 <= data['rating'] <= 5):
@@ -85,13 +95,36 @@ def submit_review():
 
 @app.route('/reviews/room/<int:room_id>', methods=['GET'])
 def get_room_reviews(room_id):
-    """Retrieve all reviews for a specific meeting room (filtering out flagged ones)."""
+    """
+    Retrieve all reviews for a specific meeting room.
+    
+    **Note**: This endpoint filters out reviews where ``is_flagged`` is True, 
+    ensuring that only appropriate content is returned to users.
+
+    :param room_id: The ID of the meeting room.
+    :type room_id: int
+    :return: JSON list of reviews.
+    :rtype: tuple   
+    """
+
     reviews = Review.query.filter_by(room_id=room_id, is_flagged=False).all()
     return jsonify([review.to_dict() for review in reviews]), 200
 
 @app.route('/reviews/<int:review_id>', methods=['PUT'])
 def update_review(review_id):
-    """Update an existing review."""
+    """
+    Update an existing review.
+
+    Expected JSON Input:
+        - rating (int): The updated rating (1-5).
+        - comment (str): The updated comment.
+
+    :param review_id: The ID of the review to update.
+    :type review_id: int
+    :return: JSON success message.
+    :rtype: tuple
+    """
+
     data = request.get_json()
     review = Review.query.get_or_404(review_id)
 
@@ -109,7 +142,15 @@ def update_review(review_id):
 
 @app.route('/reviews/<int:review_id>', methods=['DELETE'])
 def delete_review(review_id):
-    """Delete a review."""
+    """
+    Delete a review.
+
+    :param review_id: The ID of the review to delete.
+    :type review_id: int
+    :return: JSON success message.
+    :rtype: tuple
+    """
+
     review = Review.query.get_or_404(review_id)
     db.session.delete(review)
     db.session.commit()
@@ -118,7 +159,18 @@ def delete_review(review_id):
 
 @app.route('/reviews/moderate/<int:review_id>', methods=['POST'])
 def moderate_review(review_id):
-    """Flags a review as inappropriate."""
+    """
+    Flags a review as inappropriate (Moderation Feature).
+
+    Expected JSON Input:
+        - action (str): Must be "flag" to hide the review.
+        - reason (str): Optional reason for flagging.
+
+    :param review_id: The ID of the review to moderate.
+    :type review_id: int
+    :return: JSON success message.
+    :rtype: tuple
+    """
 
     user_role = request.headers.get('X-User-Role')
 
@@ -137,12 +189,15 @@ def moderate_review(review_id):
    
     return jsonify({'message': 'Invalid moderation action'}), 400
 
-# --- 5. Logs Endpoint (Phase 2) ---
 @app.route('/reviews/logs', methods=['GET'])
 def get_audit_logs():
-    """Retrieve audit logs."""
+    """
+    Retrieve audit logs related to review activities.
+
+    :return: JSON list of audit log entries.
+    :rtype: tuple
+    """
     try:
-        # Assuming audit.log is in the container's root
         with open('audit.log', 'r') as log_file:
             logs = log_file.readlines()
         return jsonify({'logs': logs}), 200
